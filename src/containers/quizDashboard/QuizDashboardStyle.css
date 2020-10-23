@@ -1,0 +1,15 @@
+.l2w-quiz-dashboard {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 100px !important;
+    background: #E9E9E9;
+}
+
+.l2w-grid-column {
+    width: 25% !important;
+}
+
+.l2w-quiz-dashboard-container {
+    padding-left: 5%;
+    padding-right: 5%;
+}

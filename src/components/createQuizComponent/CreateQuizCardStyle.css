@@ -1,0 +1,14 @@
+.l2w-create-quiz-card {
+    min-width: 100%;
+    height: 100%;
+    min-height: 150px !important;
+    background: white;
+    border: 2px solid white;
+}
+
+.l2w-json-input-comp span {
+    font-size: 18px;
+}
+.ui.modal > .actions.l2w-create-quiz-card-actions {
+    text-align: center;
+}

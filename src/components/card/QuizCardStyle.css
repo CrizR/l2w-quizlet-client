@@ -1,0 +1,57 @@
+.ui.raised.card.l2w-quiz-card, .ui.raised.cards > .card.l2w-quiz-card {
+    min-width: 100%;
+    width: 200px;
+    height: 165px;
+    background: white;
+    border: 2px solid white;
+}
+
+.l2w-quiz-card .l2w-quiz-card-header p, .l2w-quiz-card .l2w-quiz-card-header span {
+    color: var(--l2w-primary-color)
+
+}
+
+.l2w-quiz-card .l2w-quiz-card-content h3 {
+    color: var(--l2w-primary-color)
+}
+
+
+.l2w-quiz-card-header {
+    padding: 20px;
+    color: var(--l2w-primary-color)
+
+}
+
+.ui.raised.card.l2w-quiz-card {
+    text-align: left;
+}
+
+
+.l2w-quiz-card .ui.input > input {
+    margin-left: -5px;
+    padding: 5px;
+}
+
+.l2w-quiz-card .ui.segment {
+    margin: 0;
+    border: none;
+}
+
+.l2w-quiz-card-actions {
+    z-index: 99;
+}
+
+.ui.card > .extra.l2w-quiz-card-extra, .ui.cards > .card > .extra.l2w-quiz-card-extra {
+    /*background: var(--l2w-primary-color);*/
+    padding: 10px;
+    text-align: center;
+}
+
+.l2w-quiz-card.ui.card > .content, .ui.cards > .card > .content {
+    border-radius: 0;
+}
+
+
+.ui.card > .content.l2w-quiz-card-content, .ui.cards > .card > .content.l2w-quiz-card-content {
+    padding: 10px
+}

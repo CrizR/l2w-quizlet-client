@@ -1,0 +1,31 @@
+.App {
+    text-align: center;
+    background: #E9E9E9;
+    --l2w-primary-color: #121426;
+    --l2w-secondary-color: #EA2841;
+    --l2w-accent-color: #c92238;
+    --l2w-tertiary-color: #26284e;
+    height: 100vh;
+}
+
+.l2w-primary-button.ui.button {
+    background: var(--l2w-secondary-color);
+    color: white;
+}
+
+.l2w-primary-button.ui.button:hover {
+    background: var(--l2w-secondary-color);
+    color: white;
+}
+
+
+.l2w-secondary-button.ui.button {
+    background: var(--l2w-tertiary-color);
+    color: white;
+}
+
+
+.l2w-secondary-button.ui.button:hover {
+    background: var(--l2w-secondary-color);
+    color: white;
+}

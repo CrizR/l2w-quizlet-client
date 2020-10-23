@@ -1,0 +1,101 @@
+
+.ui.raised.card.l2w-flashcard, .ui.raised.cards > .card.l2w-flashcard {
+    min-height: 600px;
+    min-width: 600px;
+    background: white;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    border: 2px solid white;
+}
+
+.l2w-flashcard h2 {
+    color: white;
+}
+
+.l2w-flashcard .l2w-flashcard-header p, .l2w-flashcard .l2w-flashcard-header span {
+    color: white;
+}
+
+.l2w-flashcard-header {
+    padding: 20px;
+    background: var(--l2w-primary-color);
+    color: white;
+}
+
+.l2w-flashcard-answer-number {
+    padding-right: 15px;
+}
+
+.l2w-flashcard.ui.card > .content, .ui.cards > .card > .content {
+    padding: 0;
+    border-radius: 0;
+}
+
+
+.l2w-flashcard-answers.ui.vertical.menu {
+    width: 100%;
+    text-align: left;
+}
+
+.ui.card > .content.l2w-flashcard-content, .ui.cards > .card > .content.l2w-flashcard-content {
+    padding: 10px
+}
+
+.l2w-flashcard-answer {
+    font-size: 18px;
+}
+
+.ui.card > .extra.l2w-flashcard-extra, .ui.cards > .card > .extra.l2w-flashcard-extra {
+    background: var(--l2w-primary-color);
+    padding: 10px;
+}
+
+
+.l2w-flashcard-answers.ui.vertical.menu .item {
+    color: var(--l2w-primary-color)
+}
+
+.l2w-flashcard-answers.ui.vertical.menu .active.item {
+    background: var(--l2w-secondary-color) !important;
+    color: white !important;
+}
+
+.l2w-flashcard-answers.ui.vertical.menu .item:hover {
+    background: #ebebeb;
+    color: var(--l2w-primary-color)
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .l2w-flashcard-answers.ui.vertical.menu {
+        width: 100%;
+        text-align: left;
+    }
+
+
+    .ui.raised.card.l2w-flashcard .l2w-flashcard-header {
+        border-radius: 0 !important;;
+    }
+
+
+    .ui.raised.card.l2w-flashcard, .ui.raised.cards > .card.l2w-flashcard {
+        min-height: 500px;
+        min-width: 370px;
+        overflow: hidden;
+        border-top: 1px white solid;
+        border-left: unset;
+        border-right: unset;
+        box-shadow: none;
+        border-radius: 0 !important;
+    }
+
+    .ui.card > .extra.l2w-flashcard-extra, .ui.cards > .card > .extra.l2w-flashcard-extra {
+        border-radius: 0 !important;
+        padding: 20px;
+    }
+
+    .l2w-flashcard-answer {
+        font-size: 18px;
+    }
+
+}

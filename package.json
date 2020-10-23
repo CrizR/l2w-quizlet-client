@@ -1,0 +1,53 @@
+{
+  "name": "l2w_spaced_repetition",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.3",
+    "express-session": "^1.17.1",
+    "heap-js": "^2.1.2",
+    "moment": "^2.29.1",
+    "node": "latest",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-json-editor-ajrm": "^2.5.13",
+    "react-json-view": "^1.19.1",
+    "react-moment": "^1.0.0",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "latest",
+    "react-scripts": "3.4.3",
+    "react-truncate": "^2.4.0",
+    "redux": "^4.0.5",
+    "redux-localstorage": "^0.4.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.0",
+    "uuid": "latest"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "server": "node server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:5000"
+}
