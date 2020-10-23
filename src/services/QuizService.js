@@ -1,6 +1,6 @@
 import Quiz from "../model/QuizModel";
 
-const apiUrl = process.env.NODE_ENV === 'production' ? "" : "http://localhost:8080/api";
+const apiUrl = process.env.NODE_ENV === 'production' ? "https://l2w-quizlet-server.herokuapp.com/api/" : "http://localhost:8080/api";
 
 export const getQuizzes = () =>
     fetch(`${apiUrl}/quiz`)
