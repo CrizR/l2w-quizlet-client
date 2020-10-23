@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import "./CreateQuizCardStyle.css"
 import {
     Button,
-    Container,
     Grid,
     Modal,
 } from "semantic-ui-react";
 import {connect} from "react-redux";
-import {createQuizAction} from "../../actions/QuizActions";
+import {createQuizAction, getQuizzesAction} from "../../actions/QuizActions";
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
@@ -33,7 +32,7 @@ const sampleQuiz = {
         }
     ]
 };
-const CreateQuizCard = ({createQuiz}) => {
+const CreateQuizCard = ({createQuiz, getQuizzes}) => {
     const [quiz, setQuiz] = useState(sampleQuiz);
     const [ready, setReady] = useState(true);
 
@@ -82,6 +81,7 @@ const CreateQuizCard = ({createQuiz}) => {
         }
     }
 
+
     return (
         <Modal
             trigger={
@@ -105,7 +105,7 @@ const CreateQuizCard = ({createQuiz}) => {
                 <Grid>
                     <Grid.Column>
                         <Button disabled={!isProperQuiz()}
-                                onClick={() => isProperQuiz() && createQuiz(quiz)}
+                                onClick={() => isProperQuiz() && createQuiz(quiz) && getQuizzes()}
                                 primary>
                             Save Quiz</Button>
                     </Grid.Column>
@@ -118,7 +118,8 @@ const CreateQuizCard = ({createQuiz}) => {
 const stateToProperty = (state) => ({});
 
 const propertyToDispatchMapper = (dispatch) => ({
-    createQuiz: (quizObj) => createQuizAction(dispatch, quizObj)
+    createQuiz: (quizObj) => createQuizAction(dispatch, quizObj),
+    getQuizzes: () => getQuizzesAction(dispatch)
 });
 
 export default connect

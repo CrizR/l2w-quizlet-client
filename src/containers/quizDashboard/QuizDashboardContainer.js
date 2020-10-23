@@ -9,7 +9,7 @@ import CreateQuizCard from "../../components/createQuizComponent/CreateQuizCard"
 
 const QuizDashboardContainer = ({getQuizzes, quizzes}) => {
 
-    useEffect(getQuizzes, [quizzes]);
+    useEffect(getQuizzes, []);
 
     return (
         <>

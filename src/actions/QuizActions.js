@@ -5,7 +5,7 @@ export const DELETE_QUIZ = "DELETE_QUIZ";
 export const GET_QUIZZES = "GET_QUIZZES";
 
 export function createQuizAction(dispatch, quizObj) {
-    createQuiz(quizObj).then(quiz => {
+    return createQuiz(quizObj).then(quiz => {
         return dispatch({
             type: CREATE_QUIZ,
             quiz: quiz
@@ -14,7 +14,7 @@ export function createQuizAction(dispatch, quizObj) {
 }
 
 export function deleteQuizAction(dispatch, id) {
-    deleteQuiz(id).then(() => {
+    return deleteQuiz(id).then(() => {
         return dispatch({
             type: DELETE_QUIZ,
             id: id
@@ -23,7 +23,7 @@ export function deleteQuizAction(dispatch, id) {
 }
 
 export function getQuizzesAction(dispatch) {
-    getQuizzes().then(quizzes => {
+    return getQuizzes().then(quizzes => {
         return dispatch({
             type: GET_QUIZZES,
             quizzes: quizzes
