@@ -38,7 +38,7 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
 
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
-        if (!!parsedQuiz){
+        if (!!parsedQuiz) {
             setQuiz(parsedQuiz);
             setReady(true)
         } else {
@@ -81,6 +81,12 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
         }
     }
 
+    function createAndUpdate() {
+        createQuiz(quiz).then(() => {
+            getQuizzes();
+            setQuiz(sampleQuiz);
+        })
+    }
 
     return (
         <Modal
@@ -105,7 +111,7 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
                 <Grid>
                     <Grid.Column>
                         <Button disabled={!isProperQuiz()}
-                                onClick={() => isProperQuiz() && createQuiz(quiz) && getQuizzes()}
+                                onClick={() => isProperQuiz() && createAndUpdate()}
                                 primary>
                             Save Quiz</Button>
                     </Grid.Column>

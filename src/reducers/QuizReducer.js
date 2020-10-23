@@ -1,8 +1,9 @@
 import {CREATE_QUIZ, DELETE_QUIZ, GET_QUIZZES} from "../actions/QuizActions";
 
 
+
 const initialState = {
-    quizzes: []
+    quizzes: [],
 };
 
 
@@ -12,14 +13,12 @@ const QuizReducer = (state = initialState, action) => {
         case CREATE_QUIZ: {
             let quizzes = state.quizzes;
             quizzes.push(action.quiz);
-            console.log(quizzes);
             return Object.assign({}, state, {
                 quizzes: quizzes
             })
         }
         case DELETE_QUIZ: {
             let qs = state.quizzes.filter(quiz => quiz.id !== action.id);
-            console.log(qs);
             return Object.assign({}, state, {
                 quizzes: qs
             })

@@ -11,7 +11,8 @@ import Truncate from "react-truncate";
 
 function ExamContainer({
                            quizName, questionsFinished, isExamEnded, totalQuestions, timeLimitReached,
-                           score, redoExam, clearStorage, initializeExam, id
+                           score, maxScore, redoExam, clearStorage, initializeExam, id,
+                           m
                        }) {
 
     useEffect(() => initializeExam(id), [initializeExam, id]);
@@ -68,6 +69,9 @@ function ExamContainer({
 
                                     <Card.Content className={'l2w-score-board-content'}>
                                         <h1><Icon name={'line graph'}/>Score: {Math.ceil(score)}</h1>
+
+                                        <h4>Max Score: {Math.ceil(maxScore)}</h4>
+
                                     </Card.Content>
 
                                     <Card.Content className={'l2w-score-board-extra'} extra>
@@ -98,6 +102,7 @@ function stateToProperty(state) {
         quizTime: state.ExamReducer.quizTime,
         score: state.ExamReducer.score,
         timeLimitReached: state.ExamReducer.timeLimitReached,
+        maxScore: state.ExamReducer.maxScore,
     }
 }
 

@@ -5,11 +5,13 @@ import QuizCard from "../../components/card/QuizCard";
 import NavBarComponent from "../../components/navbar/NavBarComponent";
 import {connect} from "react-redux";
 import {getQuizzesAction} from "../../actions/QuizActions";
-import CreateQuizCard from "../../components/createQuizComponent/CreateQuizCard";
+import CreateQuizCard from "../../components/createQuiz/CreateQuizCard";
 
 const QuizDashboardContainer = ({getQuizzes, quizzes}) => {
 
-    useEffect(getQuizzes, []);
+    useEffect(() => {
+        getQuizzes()
+    }, []);
 
     return (
         <>

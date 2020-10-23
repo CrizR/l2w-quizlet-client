@@ -70,10 +70,16 @@
     padding: 25px;
 }
 
-.ui.card .l2w-score-board-content h1{
-    margin-top: 80px;
+.ui.card .l2w-score-board-content h1 {
+    margin-top: 5%;
     color: var(--l2w-primary-color);
-    font-size: 40px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.ui.card .l2w-score-board-content h4 {
+    color: var(--l2w-primary-color);
+    text-align: center;
 }
 
 .ui.card .l2w-score-board-content i {
@@ -82,12 +88,26 @@
 }
 
 
-
 .l2w-exam-container .ui.grid.l2w-quiz-header {
     margin: 0;
 }
 
 @media only screen and (max-width: 800px) {
+
+    .ui.card .l2w-score-board-content h1, .ui.card .l2w-score-board-content i {
+        color: var(--l2w-primary-color);
+        font-size: 20px;
+        text-align: center;
+    }
+
+
+    .l2w-quiz-container .l2w-score-board.ui.card {
+        height: 325px;
+        text-align: center;
+        width: 350px;
+        border: 1px solid white;
+    }
+
     .ui.card .l2w-score-board-content {
         text-align: left;
         padding: 20px;
@@ -95,7 +115,7 @@
 
 
     .l2w-quiz-container {
-        margin-top: 100px;
+        margin-top: 90px;
         height: 100%;
         text-align: center;
         width: 100%;
@@ -105,6 +125,15 @@
     .l2w-score-board.ui.card {
         height: 100%;
         width: unset;
+    }
+
+
+}
+
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+    .l2w-exam-container .ui.container {
+        width: unset;
+
     }
 
 }

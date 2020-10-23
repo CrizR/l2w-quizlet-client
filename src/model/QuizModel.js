@@ -1,4 +1,4 @@
-import Question from "./QuestionModel";
+import Question, {LEITNER_CONFIG} from "./QuestionModel";
 
 class Quiz {
 
@@ -11,11 +11,18 @@ class Quiz {
     }
 
     static fromStorage(quiz) {
-        let quizObj = new Quiz(quiz.Id, quiz.name, quiz.time,
-            quiz.questions.map((question) => Question.fromStorage(question)));
-        return quizObj
+        return new Quiz(quiz.Id, quiz.name, quiz.time,
+            quiz.questions.map((question) => Question.fromStorage(question)))
     }
 
+    maxScore() {
+        let score = 0;
+        this.questions.forEach(question => {
+            score += question.calculateScore(new Set(question.correctAnswers), 0);
+        });
+        return score * LEITNER_CONFIG.BOXES
+
+    }
 
 
 }

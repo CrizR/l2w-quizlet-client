@@ -24,6 +24,7 @@ const initialState = {
     quizStartTime: new Date(),
     score: 0,
     quizTime: 0,
+    maxSCore: 0,
     isExamEnded: false,
     timeLimitReached: false,
 };
@@ -47,9 +48,8 @@ const ExamReducer = (state = initialState, action) => {
             return nextFlashcard(state, 0, false, true);
 
         case TIME_LIMIT_REACHED: {
-            console.log(state);
             return Object.assign({}, state, {
-                score: state.score / 2,
+                score: Math.round(state.score / 2),
                 isExamEnded: true,
                 timeLimitReached: true
             });
@@ -69,7 +69,6 @@ const ExamReducer = (state = initialState, action) => {
             obj.questionStartTime = new Date();
             obj.currentSession = resetQuestions(obj.currentSession.clone());
 
-            console.log(obj);
             return Object.assign({}, {}, obj);
         default:
             return state;
@@ -125,9 +124,6 @@ function nextFlashcard(state, score, isCorrect, skip) {
         nextSession = new Heap(questionComparator)
     }
 
-    console.log(currentSession, nextSession);
-    console.log(state.score + score);
-
 
     return Object.assign({}, state, {
         score: !skip ? state.score + score : state.score,
@@ -151,6 +147,7 @@ const buildQuiz = (action) => {
 
     let obj = {
         quizName: action.quiz.name,
+        maxScore: action.quiz.maxScore(),
         currentSession: questionHeap,
         nextSession: new Heap(questionComparator),
         questionsFinished: 0,

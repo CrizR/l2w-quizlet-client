@@ -36,7 +36,8 @@ class Question {
                 answeredCorrectly += 1
             }
         });
-        return answeredCorrectly === answers.size && answeredCorrectly === this.correctAnswers.length;
+        let wrongAnswers = answers.size - answeredCorrectly;
+        return wrongAnswers === 0 && answeredCorrectly === this.correctAnswers.length;
     }
 
 
@@ -56,13 +57,15 @@ class Question {
         let speedPoints = (secondsLeft / this.timeLimit) * answeredCorrectly;
 
         // At most you receive double the amount of points if you answered questions immediately
+
         let possiblePoints = (answeredCorrectly + speedPoints) * SCORE_MULTIPLIER;
+
 
         let wrongAnswers = answers.size - answeredCorrectly;
 
-        console.log(wrongAnswers);
 
         if (wrongAnswers === 0 && answeredCorrectly === this.correctAnswers.length) {
+
             return this._repetitions >= LEITNER_CONFIG.BOXES ? 0 : possiblePoints
         } else {
             return this._repetitions >= LEITNER_CONFIG.BOXES ? 0 : (wrongAnswers * GRACE_MULTIPLIER * SCORE_MULTIPLIER) * -1
