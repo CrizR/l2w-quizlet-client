@@ -1,13 +1,26 @@
-import {createQuiz, deleteQuiz, getQuizzes} from "../services/QuizService";
+import {createQuiz, deleteQuiz, getQuizzes, updateQuiz} from "../services/QuizService";
 
 export const CREATE_QUIZ = "CREATE_QUIZ";
+export const UPDATE_QUIZ = "UPDATE_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
 export const GET_QUIZZES = "GET_QUIZZES";
+export const SEARCH_QUIZZES = "SEARCH_QUIZZES";
 
 export function createQuizAction(dispatch, quizObj) {
     return createQuiz(quizObj).then(quiz => {
         return dispatch({
             type: CREATE_QUIZ,
+            quiz: quiz
+        });
+    })
+}
+
+export function updateQuizAction(dispatch, id, quizObj) {
+    return updateQuiz(id, quizObj).then(quiz => {
+        console.log(quiz);
+        return dispatch({
+            type: UPDATE_QUIZ,
+            id: id,
             quiz: quiz
         });
     })
@@ -30,4 +43,11 @@ export function getQuizzesAction(dispatch) {
         });
     })
 
+}
+
+export function searchQuizzesAction(dispatch, searchTerm) {
+    return dispatch({
+        type: SEARCH_QUIZZES,
+        searchTerm: searchTerm,
+    });
 }

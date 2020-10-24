@@ -1,18 +1,17 @@
 import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import FlashcardComponent from "../../components/flashcard/FlashcardComponent";
-import {Breadcrumb, Button, Card, Container, Grid, Icon, Progress} from "semantic-ui-react";
+import {Button, Card, Container, Grid, Icon, Progress} from "semantic-ui-react";
 import NavBarComponent from "../../components/navbar/NavBarComponent";
 import "./ExamStyle.css"
-import {clearExamStorageAction, initializeExamAction, redoExamAction} from "../../actions/ExamActions";
+import {initializeExamAction, redoExamAction} from "../../actions/ExamActions";
 import TimerComponent from "../../components/timer/TimerComponent";
 import {Link} from "react-router-dom";
 import Truncate from "react-truncate";
 
 function ExamContainer({
                            quizName, questionsFinished, isExamEnded, totalQuestions, timeLimitReached,
-                           score, maxScore, redoExam, clearStorage, initializeExam, id,
-                           m
+                           score, maxScore, redoExam, initializeExam, id
                        }) {
 
     useEffect(() => initializeExam(id), [initializeExam, id]);
@@ -75,7 +74,7 @@ function ExamContainer({
                                     </Card.Content>
 
                                     <Card.Content className={'l2w-score-board-extra'} extra>
-                                        <Button as={Link} to={"/"} onClick={() => clearStorage()}
+                                        <Button as={Link} to={"/"}
                                                 className={'l2w-primary-button'}>Home</Button>
                                         <Button onClick={() => redoExam()}
                                                 className={'l2w-primary-button'}>Retry</Button>
@@ -109,7 +108,6 @@ function stateToProperty(state) {
 function propertyToDispatchMapper(dispatch) {
     return {
         redoExam: () => redoExamAction(dispatch),
-        clearStorage: () => clearExamStorageAction(dispatch),
         initializeExam: (id) => initializeExamAction(dispatch, id)
     }
 

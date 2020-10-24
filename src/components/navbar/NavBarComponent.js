@@ -7,7 +7,7 @@ import logo from "./logo.png"
 export const NavBarComponent = () => {
     return (
 
-        <div className={'wbdv-navbar'}>
+        <div className={'l2w-navbar'}>
             <div style={{background: 'white', transition: 'background-color 300ms linear'}}>
                 <Menu secondary>
                     <Menu.Item

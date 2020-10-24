@@ -26,12 +26,6 @@ export const redoExamAction = (dispatch) => {
     });
 };
 
-export const clearExamStorageAction = (dispatch) => {
-    return dispatch({
-        type: CLEAR_STORAGE
-    });
-};
-
 export const timeLimitReachedAction = (dispatch) => {
     return dispatch({
         type: TIME_LIMIT_REACHED

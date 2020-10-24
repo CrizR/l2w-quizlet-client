@@ -1,15 +1,25 @@
 .ui.raised.card.l2w-quiz-card, .ui.raised.cards > .card.l2w-quiz-card {
     min-width: 100%;
     width: 200px;
-    height: 165px;
+    height: 155px;
     background: white;
+    animation-name: deal-shrink;
+    animation-duration: .5s;
+    transform: scale(1.0);
     border: 2px solid white;
+    z-index: 0;
 }
 
-.l2w-quiz-card .l2w-quiz-card-header p, .l2w-quiz-card .l2w-quiz-card-header span {
-    color: var(--l2w-primary-color)
-
+.ui.raised.card.l2w-quiz-card:hover, .ui.raised.cards > .card.l2w-quiz-card:hover {
+    animation-name: deal-grow;
+    animation-duration: .5s;
+    transform: scale(1.05);
 }
+
+.ui.floating.dropdown > .menu {
+    z-index: 100;
+}
+
 
 .l2w-quiz-card .l2w-quiz-card-content h3 {
     color: var(--l2w-primary-color)
@@ -20,6 +30,16 @@
     padding: 20px;
     color: var(--l2w-primary-color)
 
+}
+
+.l2w-quiz-edit-btn.ui.button {
+    padding: 0;
+    margin: 0;
+}
+
+.l2w-quiz-start-btn {
+    width: 100%;
+    padding: 10px !important;
 }
 
 .ui.raised.card.l2w-quiz-card {
@@ -38,11 +58,10 @@
 }
 
 .l2w-quiz-card-actions {
-    z-index: 99;
+    z-index: 10
 }
 
 .ui.card > .extra.l2w-quiz-card-extra, .ui.cards > .card > .extra.l2w-quiz-card-extra {
-    /*background: var(--l2w-primary-color);*/
     padding: 10px;
     text-align: center;
 }
@@ -54,4 +73,24 @@
 
 .ui.card > .content.l2w-quiz-card-content, .ui.cards > .card > .content.l2w-quiz-card-content {
     padding: 10px
+}
+
+
+@keyframes l2w-quiz-card-grow {
+    from {
+        transform: scale(1)
+    }
+    to {
+        transform: scale(1.05)
+    }
+}
+
+
+@keyframes l2w-quiz-card-shrink {
+    from {
+        transform: scale(1.05)
+    }
+    to {
+        transform: scale(1)
+    }
 }

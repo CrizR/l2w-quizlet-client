@@ -6,8 +6,6 @@ import {combineReducers, createStore} from "redux";
 import {Provider} from "react-redux";
 import ExamContainer from "./containers/examContainer/ExamContainer";
 import ExamReducer from "./reducers/ExamReducer";
-import Heap from "heap-js";
-import Question from "./model/QuestionModel";
 import QuizDashboard from "./containers/quizDashboard/QuizDashboardContainer";
 import QuizReducer from "./reducers/QuizReducer";
 
@@ -20,10 +18,6 @@ const rootReducer = combineReducers({
 const store = createStore(
     rootReducer,
 );
-
-store.subscribe(() => {
-    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
-});
 
 function App() {
     return (

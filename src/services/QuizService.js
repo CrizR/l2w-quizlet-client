@@ -27,6 +27,18 @@ export const createQuiz = (quiz) =>
         .then(response => response.json())
         .then(quiz => Quiz.fromStorage(quiz));
 
+export const updateQuiz = (id, quiz) =>
+    fetch(`${apiUrl}/quiz/${id}`,
+        {
+            method: 'PUT',
+            body: JSON.stringify(quiz),
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(quiz => Quiz.fromStorage(quiz));
+
 
 export const deleteQuiz = (id) =>
     fetch(`${apiUrl}/quiz/${id}`, {

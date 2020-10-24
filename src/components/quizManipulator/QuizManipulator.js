@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import "./CreateQuizCardStyle.css"
+import "./QuizManipulatorStyle.css"
 import {
     Button,
     Grid,
     Modal,
 } from "semantic-ui-react";
 import {connect} from "react-redux";
-import {createQuizAction, getQuizzesAction} from "../../actions/QuizActions";
+import {createQuizAction, getQuizzesAction, updateQuizAction} from "../../actions/QuizActions";
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
@@ -32,9 +32,13 @@ const sampleQuiz = {
         }
     ]
 };
-const CreateQuizCard = ({createQuiz, getQuizzes}) => {
-    const [quiz, setQuiz] = useState(sampleQuiz);
+const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, triggerElement}) => {
+
+    const id = initialState ? initialState.id : "";
+    const [quiz, setQuiz] = useState(initialState ? removedId(initialState) : sampleQuiz);
     const [ready, setReady] = useState(true);
+    const [open, setOpen] = React.useState(false);
+
 
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
@@ -73,6 +77,10 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
 
     };
 
+    function isEdit() {
+        return !!initialState;
+    }
+
     function parseQuiz(str) {
         try {
             return JSON.parse(str);
@@ -81,26 +89,48 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
         }
     }
 
-    function createAndUpdate() {
-        createQuiz(quiz).then(() => {
-            getQuizzes();
-            setQuiz(sampleQuiz);
-        })
+    function removedId(s) {
+        if (s.hasOwnProperty('id')) {
+            let copy = JSON.parse(JSON.stringify(s));
+            delete copy['id'];
+            return copy
+        } else {
+            return s
+        }
+    }
+
+    function createOrUpdate() {
+        if (!!initialState) {
+            updateQuiz(id, quiz)
+        } else {
+            createQuiz(quiz).then(() => {
+                getQuizzes();
+                setQuiz(sampleQuiz)
+            })
+        }
+        setOpen(false);
     }
 
     return (
         <Modal
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            open={open}
             trigger={
-                <Button className={'l2w-secondary-button l2w-create-quiz-card'}>
-                    <h2>Create Quiz</h2>
-                </Button>
+                triggerElement
             }
         >
-            <Modal.Header><h2>Quiz Creator</h2></Modal.Header>
+            <Modal.Header>
+                {isEdit() ?
+                    <h2>{initialState.name}</h2>
+                    :
+                    <h2>Quiz Creator</h2>
+                }
+            </Modal.Header>
             <div className={'l2w-json-input-comp'}>
                 <JSONInput
                     id={uuid()}
-                    placeholder={sampleQuiz}
+                    placeholder={quiz}
                     locale={locale}
                     height='600px'
                     width='100%'
@@ -111,9 +141,14 @@ const CreateQuizCard = ({createQuiz, getQuizzes}) => {
                 <Grid>
                     <Grid.Column>
                         <Button disabled={!isProperQuiz()}
-                                onClick={() => isProperQuiz() && createAndUpdate()}
+                                onClick={() => isProperQuiz() && createOrUpdate()}
                                 primary>
-                            Save Quiz</Button>
+                            {isEdit() ?
+                                <span>Update Quiz</span>
+                                :
+                                <span>Save Quiz</span>
+                            }
+                        </Button>
                     </Grid.Column>
                 </Grid>
             </Modal.Actions>
@@ -125,9 +160,10 @@ const stateToProperty = (state) => ({});
 
 const propertyToDispatchMapper = (dispatch) => ({
     createQuiz: (quizObj) => createQuizAction(dispatch, quizObj),
+    updateQuiz: (id, quizObj) => updateQuizAction(dispatch, id, quizObj),
     getQuizzes: () => getQuizzesAction(dispatch)
 });
 
 export default connect
 (stateToProperty, propertyToDispatchMapper)
-(CreateQuizCard)
+(QuizManipulator)
