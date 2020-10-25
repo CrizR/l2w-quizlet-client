@@ -31,7 +31,8 @@
     "lodash": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true && react-scripts start",
+    "dev": "react-scripts start",
     "server": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
