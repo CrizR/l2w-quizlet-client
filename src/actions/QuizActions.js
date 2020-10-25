@@ -6,8 +6,8 @@ export const DELETE_QUIZ = "DELETE_QUIZ";
 export const GET_QUIZZES = "GET_QUIZZES";
 export const SEARCH_QUIZZES = "SEARCH_QUIZZES";
 
-export function createQuizAction(dispatch, quizObj) {
-    return createQuiz(quizObj).then(quiz => {
+export function createQuizAction(dispatch, user, quizObj, token) {
+    return createQuiz(user, quizObj, token).then(quiz => {
         return dispatch({
             type: CREATE_QUIZ,
             quiz: quiz
@@ -15,9 +15,8 @@ export function createQuizAction(dispatch, quizObj) {
     })
 }
 
-export function updateQuizAction(dispatch, id, quizObj) {
-    return updateQuiz(id, quizObj).then(quiz => {
-        console.log(quiz);
+export function updateQuizAction(dispatch, user, id, quizObj, token) {
+    return updateQuiz(user, id, quizObj, token).then(quiz => {
         return dispatch({
             type: UPDATE_QUIZ,
             id: id,
@@ -26,8 +25,8 @@ export function updateQuizAction(dispatch, id, quizObj) {
     })
 }
 
-export function deleteQuizAction(dispatch, id) {
-    return deleteQuiz(id).then(() => {
+export function deleteQuizAction(dispatch, user, id, token) {
+    return deleteQuiz(user, id, token).then(() => {
         return dispatch({
             type: DELETE_QUIZ,
             id: id
@@ -35,8 +34,8 @@ export function deleteQuizAction(dispatch, id) {
     })
 }
 
-export function getQuizzesAction(dispatch) {
-    return getQuizzes().then(quizzes => {
+export function getQuizzesAction(dispatch, user, token) {
+    return getQuizzes(user, token).then(quizzes => {
         return dispatch({
             type: GET_QUIZZES,
             quizzes: quizzes

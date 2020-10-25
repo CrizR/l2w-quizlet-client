@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "./QuizCardStyle.css"
 import {Button, Card, Dropdown, DropdownItem, Grid} from "semantic-ui-react";
 import {Link} from 'react-router-dom'
@@ -6,8 +6,21 @@ import {connect} from "react-redux";
 import {deleteQuizAction} from "../../actions/QuizActions";
 import Truncate from 'react-truncate';
 import CreateQuizCard from "../quizManipulator/QuizManipulator";
+import {useAuth0} from "@auth0/auth0-react";
+import config from "../../auth/auth_config";
 
-const QuizCard = ({quiz, deleteQuiz}) => {
+function QuizCard({quiz, deleteQuiz}) {
+
+    const {getAccessTokenSilently, user} = useAuth0();
+    const [token, setToken] = useState(undefined);
+
+    useEffect(() => {
+        getAccessTokenSilently({
+            audience: config.AUTH_AUDIENCE,
+        }).then((token) => {
+            setToken(token)
+        });
+    }, []);
 
     return (
         <Card className={'l2w-quiz-card'} raised>
@@ -46,7 +59,7 @@ const QuizCard = ({quiz, deleteQuiz}) => {
                                         </DropdownItem>
                                     }
                                 />
-                                <DropdownItem onClick={() => deleteQuiz(quiz.id)}>
+                                <DropdownItem onClick={() => deleteQuiz(user, quiz.id, token)}>
                                     Delete
                                 </DropdownItem>
                             </Dropdown.Menu>
@@ -70,7 +83,7 @@ const QuizCard = ({quiz, deleteQuiz}) => {
 const stateToProperty = (state) => ({});
 
 const propertyToDispatchMapper = (dispatch) => ({
-    deleteQuiz: (id) => deleteQuizAction(dispatch, id)
+    deleteQuiz: (user, id, token) => deleteQuizAction(dispatch, user, id, token)
 });
 
 export default connect

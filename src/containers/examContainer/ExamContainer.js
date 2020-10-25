@@ -8,13 +8,24 @@ import {initializeExamAction, redoExamAction} from "../../actions/ExamActions";
 import TimerComponent from "../../components/timer/TimerComponent";
 import {Link} from "react-router-dom";
 import Truncate from "react-truncate";
+import {useAuth0} from "@auth0/auth0-react";
+import config from "../../auth/auth_config";
 
 function ExamContainer({
                            quizName, questionsFinished, isExamEnded, totalQuestions, timeLimitReached,
                            score, maxScore, redoExam, initializeExam, id
                        }) {
 
-    useEffect(() => initializeExam(id), [initializeExam, id]);
+    const {getAccessTokenSilently, user} = useAuth0();
+
+    useEffect(() => {
+            getAccessTokenSilently({
+                audience: config.AUTH_AUDIENCE,
+            }).then((token) => {
+                initializeExam(user, id, token);
+            });
+        }
+        , [initializeExam, id]);
 
     const getPercentComplete = function () {
         return ((totalQuestions - (totalQuestions - questionsFinished)) / totalQuestions) * 100
@@ -108,7 +119,7 @@ function stateToProperty(state) {
 function propertyToDispatchMapper(dispatch) {
     return {
         redoExam: () => redoExamAction(dispatch),
-        initializeExam: (id) => initializeExamAction(dispatch, id)
+        initializeExam: (user, id, token) => initializeExamAction(dispatch, user, id, token)
     }
 
 }
