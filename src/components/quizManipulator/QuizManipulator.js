@@ -12,7 +12,10 @@ import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
 import {useAuth0} from "@auth0/auth0-react";
 import config from "../../auth/auth_config";
+import {debounce} from "lodash";
 
+const REQUIRED_MAIN_FIELDS = ["name", "time", "questions"];
+const REQUIRED_QUESTION_FIELDS = ["question", "answers", "correctAnswers", "timeLimit"];
 const sampleQuiz = {
     "name": "Sample Quiz",
     "time": 120,
@@ -34,14 +37,15 @@ const sampleQuiz = {
         }
     ]
 };
-const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, triggerElement}) => {
+const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, triggerElement, isEdit}) => {
 
-    const id = initialState ? initialState.id : "";
-    const [quiz, setQuiz] = useState(initialState ? removedId(initialState) : sampleQuiz);
+
+    const [quiz, setQuiz] = useState({});
     const [ready, setReady] = useState(true);
     const [open, setOpen] = React.useState(false);
     const {getAccessTokenSilently, user} = useAuth0();
     const [token, setToken] = useState(undefined);
+
 
     useEffect(() => {
         getAccessTokenSilently({
@@ -51,9 +55,14 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
         });
     }, []);
 
+    useEffect(() => {
+        setQuiz(isEdit ? setupQuizObject(selectedQuiz) : sampleQuiz)
+    }, [selectedQuiz]);
+
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
         if (!!parsedQuiz) {
+            console.log(parsedQuiz);
             setQuiz(parsedQuiz);
             setReady(true)
         } else {
@@ -63,10 +72,10 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
 
     const isProperQuiz = () => {
 
-        let requiredFields = new Set(["name", "time", "questions"]);
-        let requiredQuestionFields = new Set(["question", "answers", "correctAnswers", "timeLimit"]);
+        let requiredFields = new Set(REQUIRED_MAIN_FIELDS);
+        let requiredQuestionFields = new Set(REQUIRED_QUESTION_FIELDS);
 
-        if (!ready || !quiz || !Object.keys(quiz).length) {
+        if (!ready || !quiz || !Object.keys(quiz).length || !quiz.questions || !Object.keys(quiz.questions).length) {
             return false
         }
 
@@ -88,9 +97,6 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
 
     };
 
-    function isEdit() {
-        return !!initialState;
-    }
 
     function parseQuiz(str) {
         try {
@@ -100,7 +106,7 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
         }
     }
 
-    function removedId(s) {
+    function setupQuizObject(s) {
         if (s.hasOwnProperty('id')) {
             let copy = JSON.parse(JSON.stringify(s));
             delete copy['id'];
@@ -111,12 +117,11 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
     }
 
     function createOrUpdate() {
-        if (!!initialState) {
-            updateQuiz(user, id, quiz, token)
+        if (isEdit) {
+            updateQuiz(user, selectedQuiz.id, quiz, token)
         } else {
             createQuiz(user, quiz, token).then(() => {
                 getQuizzes(user, token);
-                setQuiz(sampleQuiz)
             })
         }
         setOpen(false);
@@ -132,8 +137,8 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
             }
         >
             <Modal.Header>
-                {isEdit() ?
-                    <h2>{initialState.name}</h2>
+                {isEdit ?
+                    <h2>{quiz.name}</h2>
                     :
                     <h2>Quiz Creator</h2>
                 }
@@ -154,7 +159,7 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
                         <Button disabled={!isProperQuiz()}
                                 onClick={() => isProperQuiz() && createOrUpdate()}
                                 primary>
-                            {isEdit() ?
+                            {isEdit ?
                                 <span>Update Quiz</span>
                                 :
                                 <span>Save Quiz</span>
@@ -167,7 +172,9 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
     );
 };
 
-const stateToProperty = (state) => ({});
+const stateToProperty = (state) => ({
+    selectedQuiz: state.QuizReducer.selected
+});
 
 const propertyToDispatchMapper = (dispatch) => ({
     createQuiz: (user, quizObj, token) => createQuizAction(dispatch, user, quizObj, token),

@@ -5,6 +5,7 @@ export const UPDATE_QUIZ = "UPDATE_QUIZ";
 export const DELETE_QUIZ = "DELETE_QUIZ";
 export const GET_QUIZZES = "GET_QUIZZES";
 export const SEARCH_QUIZZES = "SEARCH_QUIZZES";
+export const SELECT_QUIZ = "SELECT_QUIZ";
 
 export function createQuizAction(dispatch, user, quizObj, token) {
     return createQuiz(user, quizObj, token).then(quiz => {
@@ -41,7 +42,13 @@ export function getQuizzesAction(dispatch, user, token) {
             quizzes: quizzes
         });
     })
+}
 
+export function selectQuizAction(dispatch, id) {
+    return dispatch({
+        type: SELECT_QUIZ,
+        id: id
+    });
 }
 
 export function searchQuizzesAction(dispatch, searchTerm) {

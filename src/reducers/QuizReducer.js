@@ -1,9 +1,10 @@
-import {CREATE_QUIZ, DELETE_QUIZ, GET_QUIZZES, SEARCH_QUIZZES, UPDATE_QUIZ} from "../actions/QuizActions";
+import {CREATE_QUIZ, DELETE_QUIZ, GET_QUIZZES, SEARCH_QUIZZES, SELECT_QUIZ, UPDATE_QUIZ} from "../actions/QuizActions";
 
 
 const initialState = {
     quizzes: [],
-    filtered: []
+    filtered: [],
+    selected: {}
 };
 
 
@@ -33,6 +34,13 @@ const QuizReducer = (state = initialState, action) => {
                 filtered: qs
             })
         }
+        case SELECT_QUIZ: {
+            let select = state.quizzes.filter(quiz => quiz.id === action.id);
+            return Object.assign({}, state, {
+                selected: !!select.length ? select[0] : {}
+            })
+        }
+
         case GET_QUIZZES: {
             return Object.assign({}, state, {
                 quizzes: action.quizzes,

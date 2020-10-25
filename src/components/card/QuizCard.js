@@ -3,13 +3,13 @@ import "./QuizCardStyle.css"
 import {Button, Card, Dropdown, DropdownItem, Grid} from "semantic-ui-react";
 import {Link} from 'react-router-dom'
 import {connect} from "react-redux";
-import {deleteQuizAction} from "../../actions/QuizActions";
+import {deleteQuizAction, selectQuizAction} from "../../actions/QuizActions";
 import Truncate from 'react-truncate';
 import CreateQuizCard from "../quizManipulator/QuizManipulator";
 import {useAuth0} from "@auth0/auth0-react";
 import config from "../../auth/auth_config";
 
-function QuizCard({quiz, deleteQuiz}) {
+function QuizCard({quiz, selectQuiz, deleteQuiz}) {
 
     const {getAccessTokenSilently, user} = useAuth0();
     const [token, setToken] = useState(undefined);
@@ -52,9 +52,9 @@ function QuizCard({quiz, deleteQuiz}) {
                             button>
                             <Dropdown.Menu>
                                 <CreateQuizCard
-                                    initialState={quiz}
+                                    isEdit={true}
                                     triggerElement={
-                                        <DropdownItem>
+                                        <DropdownItem onClick={() => selectQuiz(quiz.id)}>
                                             Edit
                                         </DropdownItem>
                                     }
@@ -83,7 +83,8 @@ function QuizCard({quiz, deleteQuiz}) {
 const stateToProperty = (state) => ({});
 
 const propertyToDispatchMapper = (dispatch) => ({
-    deleteQuiz: (user, id, token) => deleteQuizAction(dispatch, user, id, token)
+    deleteQuiz: (user, id, token) => deleteQuizAction(dispatch, user, id, token),
+    selectQuiz: (id) => selectQuizAction(dispatch, id)
 });
 
 export default connect

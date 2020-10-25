@@ -44,6 +44,7 @@ const QuizDashboardContainer = ({getQuizzes, searchQuizzes, filtered}) => {
                         )}
                         <Grid.Column key={"add-quiz-id"} width={4}>
                             <CreateQuizCard
+                                isEdit={false}
                                 triggerElement={<Button className={'l2w-secondary-button l2w-create-quiz-card'}>
                                     <h2>Create Quiz</h2>
                                 </Button>}/>
