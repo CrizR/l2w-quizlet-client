@@ -11,7 +11,7 @@ class Quiz {
     }
 
     static fromStorage(quiz) {
-        return new Quiz(quiz.Id, quiz.name, quiz.time,
+        return new Quiz(quiz.quiz_id, quiz.name, quiz.time,
             quiz.questions.map((question) => Question.fromStorage(question)))
     }
 

@@ -33,8 +33,8 @@ export const timeLimitReachedAction = (dispatch) => {
 };
 
 
-export function initializeExamAction(dispatch, id) {
-    getQuiz(id).then((quiz) => {
+export function initializeExamAction(dispatch, user, id, token) {
+    getQuiz(user, id, token).then((quiz) => {
         return dispatch({
             type: INITIALIZE_EXAM,
             quiz: quiz

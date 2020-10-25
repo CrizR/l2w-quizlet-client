@@ -1,16 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import "./QuizDashboardStyle.css"
-import {Button, Container, Grid, Input, Loader, Menu} from "semantic-ui-react";
+import {Button, Container, Grid, Input, Menu} from "semantic-ui-react";
 import QuizCard from "../../components/card/QuizCard";
 import NavBarComponent from "../../components/navbar/NavBarComponent";
 import {connect} from "react-redux";
 import {getQuizzesAction, searchQuizzesAction} from "../../actions/QuizActions";
 import CreateQuizCard from "../../components/quizManipulator/QuizManipulator";
+import {useAuth0} from "@auth0/auth0-react";
+import config from "../../auth/auth_config"
 
 const QuizDashboardContainer = ({getQuizzes, searchQuizzes, filtered}) => {
+    const {getAccessTokenSilently, user} = useAuth0();
 
     useEffect(() => {
-        getQuizzes()
+        getAccessTokenSilently({
+            audience: config.AUTH_AUDIENCE,
+        }).then((token) => {
+            getQuizzes(user, token)
+        });
     }, []);
 
 
@@ -54,7 +61,7 @@ const stateToProperty = (state) => ({
 });
 
 const propertyToDispatchMapper = (dispatch) => ({
-    getQuizzes: () => getQuizzesAction(dispatch),
+    getQuizzes: (user, token) => getQuizzesAction(dispatch, user, token),
     searchQuizzes: (term) => searchQuizzesAction(dispatch, term)
 });
 

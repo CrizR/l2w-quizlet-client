@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./QuizManipulatorStyle.css"
 import {
     Button,
@@ -10,6 +10,8 @@ import {createQuizAction, getQuizzesAction, updateQuizAction} from "../../action
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
+import {useAuth0} from "@auth0/auth0-react";
+import config from "../../auth/auth_config";
 
 const sampleQuiz = {
     "name": "Sample Quiz",
@@ -38,7 +40,16 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
     const [quiz, setQuiz] = useState(initialState ? removedId(initialState) : sampleQuiz);
     const [ready, setReady] = useState(true);
     const [open, setOpen] = React.useState(false);
+    const {getAccessTokenSilently, user} = useAuth0();
+    const [token, setToken] = useState(undefined);
 
+    useEffect(() => {
+        getAccessTokenSilently({
+            audience: config.AUTH_AUDIENCE,
+        }).then((token) => {
+            setToken(token)
+        });
+    }, []);
 
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
@@ -101,10 +112,10 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
 
     function createOrUpdate() {
         if (!!initialState) {
-            updateQuiz(id, quiz)
+            updateQuiz(user, id, quiz, token)
         } else {
-            createQuiz(quiz).then(() => {
-                getQuizzes();
+            createQuiz(user, quiz, token).then(() => {
+                getQuizzes(user, token);
                 setQuiz(sampleQuiz)
             })
         }
@@ -159,9 +170,9 @@ const QuizManipulator = ({createQuiz, updateQuiz, initialState, getQuizzes, trig
 const stateToProperty = (state) => ({});
 
 const propertyToDispatchMapper = (dispatch) => ({
-    createQuiz: (quizObj) => createQuizAction(dispatch, quizObj),
-    updateQuiz: (id, quizObj) => updateQuizAction(dispatch, id, quizObj),
-    getQuizzes: () => getQuizzesAction(dispatch)
+    createQuiz: (user, quizObj, token) => createQuizAction(dispatch, user, quizObj, token),
+    updateQuiz: (user, id, quizObj, token) => updateQuizAction(dispatch, user, id, quizObj, token),
+    getQuizzes: (user, token) => getQuizzesAction(dispatch, user, token)
 });
 
 export default connect
