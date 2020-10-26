@@ -12,7 +12,7 @@ import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
 import {useAuth0} from "@auth0/auth0-react";
 import config from "../../auth/auth_config";
-
+import useEventListener from '@use-it/event-listener'
 
 const REQUIRED_MAIN_FIELDS = ["name", "time", "questions"];
 const REQUIRED_QUESTION_FIELDS = ["question", "answers", "correctAnswers", "timeLimit"];
@@ -70,6 +70,11 @@ const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, trig
     const {getAccessTokenSilently, user} = useAuth0();
     const [token, setToken] = useState(undefined);
 
+    function handler({key}) {
+        setReady(false)
+    }
+
+    useEventListener('keydown', handler);
 
     useEffect(() => {
         getAccessTokenSilently({
@@ -79,9 +84,11 @@ const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, trig
         });
     }, []);
 
+
     useEffect(() => {
         setQuiz(isEdit ? setupQuizObject(selectedQuiz) : sampleQuiz)
     }, [selectedQuiz]);
+
 
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
@@ -173,6 +180,7 @@ const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, trig
                     locale={locale}
                     height='600px'
                     width='100%'
+                    waitAfterKeyPress={1500}
                     onChange={handleChange}
                 />
             </div>
