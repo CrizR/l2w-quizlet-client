@@ -12,7 +12,7 @@ import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
 import {useAuth0} from "@auth0/auth0-react";
 import config from "../../auth/auth_config";
-import {debounce} from "lodash";
+
 
 const REQUIRED_MAIN_FIELDS = ["name", "time", "questions"];
 const REQUIRED_QUESTION_FIELDS = ["question", "answers", "correctAnswers", "timeLimit"];
@@ -34,9 +34,33 @@ const sampleQuiz = {
                 3
             ],
             "timeLimit": 60
+        },
+        {
+            "question": "What is true about a square?",
+            "answers": [
+                "All sides have equal length.",
+                "It only has 3 sides",
+                "That you are dull."
+            ],
+            "correctAnswers": [
+                0
+            ],
+            "timeLimit": 60
+        },
+        {
+            "question": "What is true about a triangle?",
+            "answers": [
+                "It only has 3 sides",
+                "It's pointy"
+            ],
+            "correctAnswers": [
+                0
+            ],
+            "timeLimit": 60
         }
     ]
 };
+
 const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, triggerElement, isEdit}) => {
 
 

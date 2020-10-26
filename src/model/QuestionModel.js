@@ -34,6 +34,10 @@ class Question {
         this._repetitions = 0;
     }
 
+    seen() {
+        this._repetitions += 1;
+    }
+
     demote(interval) {
         this._box = Math.max(this._box - interval, 0);
         this._repetitions += 1;

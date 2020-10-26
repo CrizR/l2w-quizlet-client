@@ -4,7 +4,7 @@ import {Icon} from "semantic-ui-react";
 import {skipQuestionAction, submitAnswersAction, timeLimitReachedAction} from "../../actions/ExamActions";
 
 function FlashcardComponent({currentQuestion, questionStartTime, quizStartTime, quizTime, isMasterTimer, submitAnswers, timeLimitReached}) {
-    const [counter, setCounter] = useState(0);
+    const [, setCounter] = useState(0);
 
     let questionTime = !!currentQuestion ? currentQuestion.timeLimit : 0;
 
