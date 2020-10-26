@@ -77,7 +77,8 @@ class SpacedLeitner {
      *
      * Lastly, if a user decides to skip a card that's fine, but that counts as a repetition if they do.
      * The reason for doing this is so that a user doesn't get unlimited time for a question just by skipping ahead
-     * until they get to that same question again.
+     * until they get to that same question again. The difference between a skip and running out of time is just
+     * that if you run out of time, the question gets demoted, but not if you skip.
      *
      * Overall complexities:
      *
@@ -102,6 +103,7 @@ class SpacedLeitner {
         let isExamEnded = false;
         let questionsFinished = state.questionsFinished;
 
+        console.log(score, state.score);
         if (skip) {
             question.seen();
             nextSession.push(question); // time log(n)
@@ -155,6 +157,11 @@ class SpacedLeitner {
      * for partially answered questions and zero or less points for wrong answers. However, in order to to make this
      * method work only the first n repetitions for a card where n = max boxes would be allowed to receive any points.
      *
+     * Also, if a question is skipped, 0 points are added. If the user runs out of time for a question
+     * the same happens. This incentivizes users to spend more time on a question they don't understand. i.e it's
+     * better to spend the time thinking about the answer than it is to just guess. And of course if you guess wrongly
+     * points are deducted from your score.
+     *
      *
      * @param question the question they answered
      * @param answers the answers they submitted
@@ -165,7 +172,7 @@ class SpacedLeitner {
         let answeredCorrectly = 0;
         let possibleAnswers = new Set(question.correctAnswers);
 
-        if (!!answers) {
+        if (!!answers && !!answers.size) {
             answers.forEach(answer => {
                 if (possibleAnswers.has(answer)) {
                     answeredCorrectly += 1
@@ -212,7 +219,7 @@ class SpacedLeitner {
      */
     static timeLimitReached(state) {
         return Object.assign({}, state, {
-            score: Math.round(state.score / LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT),
+            score: Math.round(state.score * LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT),
             isExamEnded: true,
             timeLimitReached: true
         });
