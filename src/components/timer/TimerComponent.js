@@ -62,7 +62,7 @@ function FlashcardComponent({currentQuestion, questionStartTime, quizStartTime, 
         };
     }, [masterTime, questionTimeLeft, submitAnswers, timeLimitReached]);
 
-    return ( // TODO: pull out colors into variables
+    return (
         <>
             {isMasterTimer ?
                 <h3 style={{color: masterColor}}><Icon
