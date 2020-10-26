@@ -103,7 +103,8 @@ class SpacedLeitner {
         let questionsFinished = state.questionsFinished;
 
         if (skip) {
-            question.seen()
+            question.seen();
+            nextSession.push(question); // time log(n)
         } else if (isCorrect) {
             question.promote(LEITNER_CONFIG.PROMOTION_INTERVAL, LEITNER_CONFIG.BOXES); // time O(1)
             questionsFinished = Math.min(
