@@ -86,7 +86,6 @@ const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, trig
     const handleChange = e => {
         let parsedQuiz = parseQuiz(e.json);
         if (!!parsedQuiz) {
-            console.log(parsedQuiz);
             setQuiz(parsedQuiz);
             setReady(true)
         } else {

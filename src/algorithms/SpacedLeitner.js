@@ -30,8 +30,6 @@ class SpacedLeitner {
             questionHeap.push(Question.fromStorage(question))
         });
 
-        console.log(quiz);
-
         let obj = {
             quizName: quiz.name,
             maxScore: SpacedLeitner.maxScore(quiz.questions),
@@ -212,7 +210,6 @@ class SpacedLeitner {
      * @returns {*}
      */
     static timeLimitReached(state) {
-        console.log(Math.round(state.score / LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT));
         return Object.assign({}, state, {
             score: Math.round(state.score / LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT),
             isExamEnded: true,
