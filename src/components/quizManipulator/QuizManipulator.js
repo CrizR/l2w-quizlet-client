@@ -40,7 +40,6 @@ const sampleQuiz = {
             "answers": [
                 "All sides have equal length.",
                 "It only has 3 sides",
-                "That you are dull."
             ],
             "correctAnswers": [
                 0
@@ -54,7 +53,7 @@ const sampleQuiz = {
                 "It's pointy"
             ],
             "correctAnswers": [
-                0
+                0,1
             ],
             "timeLimit": 60
         }
