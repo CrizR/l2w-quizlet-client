@@ -5,10 +5,11 @@ export const LEITNER_CONFIG = {
     BOXES: 3,
     DEMOTION_INTERVAL: 1,
     PROMOTION_INTERVAL: 1,
+    SCORE_MULTIPLIER: 1000,
+    GRACE_MULTIPLIER: .5,
+    TIME_LIMIT_REACHED_PUNISHMENT: .5
 };
 
-const SCORE_MULTIPLIER = 1000;
-const GRACE_MULTIPLIER = .5;
 
 function questionComparator(q1, q2) {
     return q1.box - q2.box
@@ -20,7 +21,7 @@ class SpacedLeitner {
     /**
      * Initializes the state for a quiz using SpacedLeitner
      * @param quiz
-     * @returns state for reducer
+     * @returns {*} state for reducer
      */
     static initialize(quiz) {
         let questionHeap = new Heap(questionComparator);
@@ -28,6 +29,8 @@ class SpacedLeitner {
         quiz.questions.forEach(question => {
             questionHeap.push(Question.fromStorage(question))
         });
+
+        console.log(quiz);
 
         let obj = {
             quizName: quiz.name,
@@ -56,44 +59,75 @@ class SpacedLeitner {
     }
 
     /**
-     * Updates the state given the user's answers and updates the current question
+     * Updates the state given the user's answers and updates the current question.
+     *
+     * Algorithm works as such:
+     *
+     * There are n boxes as defined in the LEITNER_CONFIG
+     *
+     * Each question/flashcard starts in the first box. For each correct answer, they are moved into the next (promote).
+     * For each wrong answer they are moved backwards (demote). If a question gets to the last box, it is completed.
+     *
+     * This happens for each session where a session contains all of the current cards the user has not finished.
+     * Each session is stored in a Heap where the questions with the lowest box values are at the top. (0,0,1,2,3)
+     *
+     * As questions are encountered and answered they are added to the next session but only if they haven't
+     * reached the last box.
+     *
+     * Once the current session is empty, we then add all questions from the next session to the current session
+     * and continue the quiz.
+     *
+     * Lastly, if a user decides to skip a card that's fine, but that counts as a repetition if they do.
+     * The reason for doing this is so that a user doesn't get unlimited time for a question just by skipping ahead
+     * until they get to that same question again.
+     *
+     * Overall complexities:
+     *
+     * Time: O(log(n) + k) (bottleneck occurs when adding to the heap and calculating score)
+     * Space: O(n) (2 heaps storing each session)
+     *
      * @param state the state to update
      * @param answers the answers submitted by the user
      * @param skip boolean used to determine whether or not the question was skipped
      * @returns {*}
      */
     static nextFlashcard(state, answers, skip = false) {
-        let currentSession = state.currentSession; // Should I clone?
-        let nextSession = state.nextSession;// Should I clone?
+        let currentSession = state.currentSession;
+        let nextSession = state.nextSession;
         let currentQuestion = state.currentQuestion;
-        let question = currentSession.pop();
+        let question = currentSession.pop(); // log(n)
         let tta = new Date() - state.questionStartTime;
+        // time O(k) where k = len(currentQuestion.correctAnswers)
         let score = SpacedLeitner.calculateScore(currentQuestion, answers, tta);
+        //time O(k) where k = len(currentQuestion.correctAnswers)
         let isCorrect = SpacedLeitner.isCorrectAnswers(currentQuestion, answers);
         let isExamEnded = false;
         let questionsFinished = state.questionsFinished;
 
-        if (isCorrect) {
-            question.promote(LEITNER_CONFIG.PROMOTION_INTERVAL, LEITNER_CONFIG.BOXES);
-            questionsFinished = Math.min(questionsFinished + LEITNER_CONFIG.PROMOTION_INTERVAL, state.totalQuestions);
+        if (skip) {
+            question.seen()
+        } else if (isCorrect) {
+            question.promote(LEITNER_CONFIG.PROMOTION_INTERVAL, LEITNER_CONFIG.BOXES); // time O(1)
+            questionsFinished = Math.min(
+                questionsFinished + LEITNER_CONFIG.PROMOTION_INTERVAL,
+                state.totalQuestions);
+
             if (question.box < LEITNER_CONFIG.BOXES) {
-                nextSession.push(question);
+                nextSession.push(question); // time log(n)
             }
         } else {
-            if (!skip) {
-                questionsFinished = question.box > 0 ?
-                    Math.max(questionsFinished - LEITNER_CONFIG.DEMOTION_INTERVAL, 0)
-                    : questionsFinished;
-                question.demote(LEITNER_CONFIG.DEMOTION_INTERVAL);
-            }
-            nextSession.push(question);
+            questionsFinished = question.box > 0 ?
+                Math.max(questionsFinished - LEITNER_CONFIG.DEMOTION_INTERVAL, 0)
+                : questionsFinished;
+            question.demote(LEITNER_CONFIG.DEMOTION_INTERVAL); // time O(1)
+            nextSession.push(question); // time log(n)
         }
 
         // If our current session is done
-        if (!currentSession.size()) {
+        if (!currentSession.size()) { // time O(1) I assume
 
             // if our next session is also done, end the exam (all questions have been finished)
-            if (!nextSession.size()) {
+            if (!nextSession.size()) { // time O(1) I assume
                 isExamEnded = true;
             }
 
@@ -109,12 +143,20 @@ class SpacedLeitner {
             isExamEnded: isExamEnded,
             questionsFinished: questionsFinished,
             questionStartTime: new Date(),
-            currentQuestion: currentSession.peek()
+            currentQuestion: currentSession.peek() // time O(1)
         });
     }
 
     /**
      * Calculate a submissions score given the question, answers and time to answer
+     *
+     * There are multiple ways to handle this, I went with the following:
+     *
+     * Firs way is for is users gain full points or more for quickly answered questions, less points
+     * for partially answered questions and zero or less points for wrong answers. However, in order to to make this
+     * method work only the first n repetitions for a card where n = max boxes would be allowed to receive any points.
+     *
+     *
      * @param question the question they answered
      * @param answers the answers they submitted
      * @param timeToAnswer the amount of time it took in seconds to submit
@@ -137,28 +179,42 @@ class SpacedLeitner {
             // Gives at most all possible points
             let speedPoints = (secondsLeft / question.timeLimit) * answeredCorrectly;
             // At most you receive double the amount of points if you answered questions immediately
-            let possiblePoints = (answeredCorrectly + speedPoints) * SCORE_MULTIPLIER;
+            let possiblePoints = (answeredCorrectly + speedPoints) * LEITNER_CONFIG.SCORE_MULTIPLIER;
             let wrongAnswers = answers.size - answeredCorrectly;
 
-            if (wrongAnswers === 0 && answeredCorrectly === question.correctAnswers.length) {
 
+            // You only get points if this questions repetitions is less than the number of boxes
+            // i.e if you've seen gotten this card partially right 3 times already, you don't get a chance
+            // to then get more points by answering it right 3 times after. And you still need to finish the quiz
+            // otherwise your total points gets halved
+            if (wrongAnswers === 0 && answeredCorrectly === question.correctAnswers.length) {
                 return question.repetitions >= LEITNER_CONFIG.BOXES ? 0 : possiblePoints
+            } else if (wrongAnswers === 0) {
+                // Case of partial credit (with no wrong answers)
+                return question.repetitions >= LEITNER_CONFIG.BOXES ? 0 : possiblePoints * LEITNER_CONFIG.GRACE_MULTIPLIER
+
             } else {
+                // Negative to prevent guessing
                 return question.repetitions >= LEITNER_CONFIG.BOXES ? 0 :
-                    (wrongAnswers * GRACE_MULTIPLIER * SCORE_MULTIPLIER) * -1
+                    (wrongAnswers * LEITNER_CONFIG.GRACE_MULTIPLIER * LEITNER_CONFIG.SCORE_MULTIPLIER) * -1
             }
+
         }
         return 0
     }
 
     /**
-     * Update the state if the timeLimit was reached
+     * Update the state if the timeLimit was reached.
+     *
+     * Your score is reduced as a result.
+     *
      * @param state
      * @returns {*}
      */
     static timeLimitReached(state) {
+        console.log(Math.round(state.score / LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT));
         return Object.assign({}, state, {
-            score: Math.round(state.score / 2),
+            score: Math.round(state.score / LEITNER_CONFIG.TIME_LIMIT_REACHED_PUNISHMENT),
             isExamEnded: true,
             timeLimitReached: true
         });
