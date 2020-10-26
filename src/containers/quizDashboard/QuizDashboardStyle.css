@@ -5,6 +5,11 @@
     background: #E9E9E9;
 }
 
+
+.l2w-search-quiz {
+    width: 200px;
+}
+
 .l2w-grid-column {
     width: 25% !important;
 }
@@ -13,3 +18,15 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+
+@media only screen and (max-width: 800px) {
+
+    .l2w-quiz-dashboard-menu-item h2 {
+        font-size: 18px;
+    }
+
+    .l2w-search-quiz {
+        width: 220px;
+    }
+}
+

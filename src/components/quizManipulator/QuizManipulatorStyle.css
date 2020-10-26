@@ -12,3 +12,7 @@
 .ui.modal > .actions.l2w-create-quiz-card-actions {
     text-align: center;
 }
+
+.ui.menu .item>.input input {
+    width: 50%;
+}

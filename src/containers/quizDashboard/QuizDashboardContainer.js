@@ -31,7 +31,7 @@ const QuizDashboardContainer = ({getQuizzes, searchQuizzes, filtered}) => {
                             <h2>Your Quizzes</h2>
                         </Menu.Item>
                         <Menu.Item
-                            className="aligned">
+                            className="aligned l2w-search-quiz">
                             <Input onChange={(e) => searchQuizzes(e.target.value)} icon={'search'}
                                    placeholder='Search...'/>
                         </Menu.Item>
