@@ -30,8 +30,6 @@ class SpacedLeitner {
             questionHeap.push(Question.fromStorage(question))
         });
 
-        console.log(quiz);
-
         let obj = {
             quizName: quiz.name,
             maxScore: SpacedLeitner.maxScore(quiz.questions),
