@@ -64,7 +64,7 @@ class SpacedLeitner {
      * There are n boxes as defined in the LEITNER_CONFIG
      *
      * Each question/flashcard starts in the first box. For each correct answer, they are moved into the next (promote).
-     * For each wrong answer they are moved backwards (demote). If a question gets to the last box, it is finished.
+     * For each wrong answer they are moved backwards (demote). If the question is answered correctly while in the last box, it is finished.
      *
      * This happens for each session where a session contains all of the current cards the user has not finished.
      * Each session is represented by a Heap where the questions with the lowest box values are at the top. (0,0,1,2,3)
@@ -72,8 +72,7 @@ class SpacedLeitner {
      * As questions are encountered and answered they are added to the next session but only if they haven't
      * reached the last box.
      *
-     * Once the current session is empty, we then add all questions from the next session to the current session
-     * and continue the quiz.
+     * Once the current session is empty, all questions from the next session are added to the current session and the quiz continues.
      *
      * Lastly, if a user decides to skip a card that's fine, but that counts as a repetition if they do.
      * The reason for doing this is so that a user doesn't get unlimited time for a question just by skipping ahead
