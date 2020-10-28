@@ -6,9 +6,6 @@ const Auth0ProviderWithHistory = ({children}) => {
     const clientId = process.env.REACT_APP_AUTH_CLIENT_ID;
     const audience = process.env.REACT_APP_AUTH_AUDIENCE;
 
-
-    console.log(domain, clientId, audience);
-
     return (
         <Auth0Provider
             domain={domain}
