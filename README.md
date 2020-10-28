@@ -17,10 +17,10 @@ Each session is represented by a Heap where the questions with the lowest box va
 As questions are encountered and answered they are added to the next session but only if they haven't
 reached the last box.
 
-Once the current session is empty, we then add all questions from the next session to the current session
-and continue the quiz.
+Once the current session is empty, all questions from the next session are added to the current session
+and the quiz continues.
 
-Lastly, if a user decides to skip a card the card is put into the next session.
+Lastly, if a user decides to skip a card the card is put into the next session. The "punishment" is a reduction in score.
 
 ### Edge Case Improvements:
 
