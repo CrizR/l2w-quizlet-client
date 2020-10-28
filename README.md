@@ -9,7 +9,7 @@
 Conceptually there are n boxes containing k flashcards (where a flashcard is your typical question with answers).
 
 Each question/flashcard starts in the first box. For each correct answer, the question is moved into the next box (promote).
-For each wrong answer the question is moved backwards (demote). If a question gets to the last box, it is finished.
+For each wrong answer the question is moved backwards (demote). If the question is answered correctly while in the last box, it is finished.
  
 This happens for each session where a session contains all of the current cards the user has not finished.
 Each session is represented by a Heap where the questions with the lowest box values are at the top. (0,0,1,2,3)
