@@ -22,6 +22,8 @@ and the quiz continues.
 
 Lastly, if a user decides to skip a card the card is put into the next session. The "punishment" is a reduction in score.
 
+This algorithm is based on https://en.wikipedia.org/wiki/Leitner_system.
+
 ### Edge Case Improvements:
 
 1. Handling of small quizzes.
