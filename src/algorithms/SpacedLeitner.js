@@ -103,7 +103,6 @@ class SpacedLeitner {
         let isExamEnded = false;
         let questionsFinished = state.questionsFinished;
 
-        console.log(score, state.score);
         if (skip) {
             question.seen();
             nextSession.push(question); // time log(n)

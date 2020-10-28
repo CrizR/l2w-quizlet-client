@@ -7,7 +7,6 @@ import {deleteQuizAction, selectQuizAction} from "../../actions/QuizActions";
 import Truncate from 'react-truncate';
 import CreateQuizCard from "../quizManipulator/QuizManipulator";
 import {useAuth0} from "@auth0/auth0-react";
-import config from "../../auth/auth_config";
 
 function QuizCard({quiz, selectQuiz, deleteQuiz}) {
 
@@ -16,7 +15,7 @@ function QuizCard({quiz, selectQuiz, deleteQuiz}) {
 
     useEffect(() => {
         getAccessTokenSilently({
-            audience: config.AUTH_AUDIENCE,
+            audience: process.env.REACT_APP_AUTH_AUDIENCE,
         }).then((token) => {
             setToken(token)
         });

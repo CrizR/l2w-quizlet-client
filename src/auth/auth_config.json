@@ -1,7 +1,0 @@
-{
-  "AUTH_DOMAIN": "l2w.us.auth0.com",
-  "AUTH_CLIENT_ID": "49P5xdxd0iB4zsa476cNurglmE0hUkIP",
-  "AUTH_AUDIENCE": "https://l2w.us.auth0.com/api/v2/",
-  "AUTH_SCOPE": "read:current_user update:current_user_metadata"
-}
-

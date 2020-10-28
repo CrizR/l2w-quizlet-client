@@ -9,7 +9,6 @@ import TimerComponent from "../../components/timer/TimerComponent";
 import {Link} from "react-router-dom";
 import Truncate from "react-truncate";
 import {useAuth0} from "@auth0/auth0-react";
-import config from "../../auth/auth_config";
 
 function ExamContainer({
                            quizName, questionsFinished, isExamEnded, totalQuestions, timeLimitReached,
@@ -20,7 +19,7 @@ function ExamContainer({
 
     useEffect(() => {
             getAccessTokenSilently({
-                audience: config.AUTH_AUDIENCE,
+                audience: process.env.REACT_APP_AUTH_AUDIENCE,
             }).then((token) => {
                 initializeExam(user, id, token);
             });

@@ -7,14 +7,13 @@ import {connect} from "react-redux";
 import {getQuizzesAction, searchQuizzesAction} from "../../actions/QuizActions";
 import CreateQuizCard from "../../components/quizManipulator/QuizManipulator";
 import {useAuth0} from "@auth0/auth0-react";
-import config from "../../auth/auth_config"
 
 const QuizDashboardContainer = ({getQuizzes, searchQuizzes, filtered}) => {
     const {getAccessTokenSilently, user} = useAuth0();
 
     useEffect(() => {
         getAccessTokenSilently({
-            audience: config.AUTH_AUDIENCE,
+            audience: process.env.REACT_APP_AUTH_AUDIENCE,
         }).then((token) => {
             getQuizzes(user, token)
         });

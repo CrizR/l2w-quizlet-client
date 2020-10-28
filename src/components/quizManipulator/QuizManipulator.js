@@ -11,7 +11,6 @@ import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 import {v4 as uuid} from "uuid";
 import {useAuth0} from "@auth0/auth0-react";
-import config from "../../auth/auth_config";
 import useEventListener from '@use-it/event-listener'
 
 const REQUIRED_MAIN_FIELDS = ["name", "time", "questions"];
@@ -77,7 +76,7 @@ const QuizManipulator = ({createQuiz, updateQuiz, selectedQuiz, getQuizzes, trig
 
     useEffect(() => {
         getAccessTokenSilently({
-            audience: config.AUTH_AUDIENCE,
+            audience: process.env.REACT_APP_AUTH_AUDIENCE,
         }).then((token) => {
             setToken(token)
         });

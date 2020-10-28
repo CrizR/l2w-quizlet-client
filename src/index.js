@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history";
-
+require('dotenv').config();
 
 ReactDOM.render(
     <Auth0ProviderWithHistory>
