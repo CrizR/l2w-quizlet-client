@@ -52,7 +52,8 @@ Now the bottleneck is between our l2w-quizlet-servers and Dynamodb.
 In general, DynamoDB scales horizontally on its own thanks to AWS's awesomeness. Also, because our data isn't relational, the latency is very low already when it comes to accessing quiz data. Additionally, the data is partitioned by user, so the query speeds are fast as is. DynamoDB tends to be pretty cheap, as well. In using DynamoDB, the result is that things are easier to maintain as most of the overhead is handled by AWS. But let's say I wanted to utilize my own database to reduce costs and handle everything on my own.
 
 So if I go that route, let's scrap DynamoDB and go for MongoDB. My quiz document will remain the same and be indexed by the user's email. In order to match DynamoDB in terms of its scalability, I'd want to deploy a MongoDB cluster that is sharded by a key with high cardinality (many distinct values), low frequency (uniform distribution). This can be handled in the same I would split up our cache servers by using consistent hashing. We generate a key that again maps to a number from 0-256 and then use MongoDB's Hashed Sharding to have it automatically route the query. This helps for availability, but to improve reliability, I'd also want replicas of our database so as to prevent downtime. Luckily, MongoDB already handles this, so we should be good. Lastly, this would need to be deployed, and we can use MongoDB Atlas to handle this deployment.
-So now, in theory our data is highly available by virtue of our multiple l2w-quizlet-servers, cache servers, and properly sharded database. It is also reliable due to our database replication.
+
+So now, in theory our data is highly available by virtue of our multiple l2w-quizlet-servers, cache servers, and properly sharded database. It is also a bit more reliable due to our database replication.
 
 #### Maintainability
 
