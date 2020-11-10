@@ -31,11 +31,6 @@ For a quiz with a single question, the user has to answer the same question mult
 
 2. If there is only one question left and it has not reached the last box, the user will see the question multiple times in a row before the quiz is finished. Would be best to randomize the order of answers for consecutive identical questions.
 
-
-### Production Ready Improvements:
-
-Right now there are three layers to the l2w-quizlet application. The client, server, and db. In a production environment, I'd want to maximize availability, reliability, and maintainability.
-
 ### Production Ready Improvements:
 
 Right now, there are three layers to the l2w-quizlet application: the client, server, and DB. In a production environment, I'd want to maximize availability, reliability, and maintainability.
